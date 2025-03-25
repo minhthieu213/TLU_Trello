@@ -9,7 +9,8 @@ import AvatarGroup from '@mui/material/AvatarGroup'
 import { Tooltip } from '@mui/material'
 import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
-import FilterListIcon from '@mui/icons-material/FilterList';
+import FilterListIcon from '@mui/icons-material/FilterList'
+import { upperCaseFirstLetter } from '~/utils/upperCase'
 
 const BOARD_CHIP_STYLE = {
   color: 'white',
@@ -25,7 +26,7 @@ const BOARD_CHIP_STYLE = {
   }
 }
 
-function BoardBar() {
+function BoardBar({ board }) {
   return (
     <Box px={2} sx={{
       width: '100%',
@@ -40,63 +41,60 @@ function BoardBar() {
       '&::-webkit-scrollbar-track': { m: 2 }
     }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Chip 
+        <Chip
           sx={BOARD_CHIP_STYLE}
-          icon={<DashboardIcon />} 
-          label="Dashboard" 
+          icon={<DashboardIcon />}
+          label={board?.title}
           clickable/>
 
-        <Chip 
+        <Chip
           sx={BOARD_CHIP_STYLE}
-          icon={<VpnLockIcon />} 
-          label="Public/ Private Workspace" 
+          icon={<VpnLockIcon />}
+          label={upperCaseFirstLetter(board?.type)}
           clickable/>
 
-        <Chip 
+        <Chip
           sx={BOARD_CHIP_STYLE}
-          icon={<AddToDriveIcon />} 
-          label="Add To Google Drive" 
+          icon={<AddToDriveIcon />}
+          label="Add To Google Drive"
           clickable/>
 
-        <Chip 
+        <Chip
           sx={BOARD_CHIP_STYLE}
-          icon={<BoltIcon />} 
-          label="Automation" 
+          icon={<BoltIcon />}
+          label="Automation"
           clickable/>
 
-        <Chip 
+        <Chip
           sx={BOARD_CHIP_STYLE}
-          icon={<FilterListIcon />} 
-          label="Filter" 
+          icon={<FilterListIcon />}
+          label="Filter"
           clickable/>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Button 
-        sx={{ color: 'white', borderColor: 'white', '&:hover': { borderColor: 'white' }}}
-        variant="outlined" 
-        startIcon={<PersonAddIcon />}>Invite</Button>
+        <Button sx={{ color: 'white', borderColor: 'white', '&:hover': { borderColor: 'white' } }}
+          variant="outlined"
+          startIcon={<PersonAddIcon />}>Invite</Button>
         <AvatarGroup
-         max={4} 
-         sx={{ 
-          gap: '10px', 
-          '& .MuiAvatar-root': { 
-            width: 34, 
-            height: 34, 
-            fontSize: 16, 
-            border: 'none',
-            color:'white',
-            cursor: 'pointer',
-            '&:first-of-type': {
-              bgcolor: '#a4b0de'
-            } }}}>
+          max={4}
+          sx={{
+            gap: '10px', '& .MuiAvatar-root': {
+              width: 34,
+              height: 34,
+              fontSize: 16,
+              border: 'none',
+              color:'white',
+              cursor: 'pointer',
+              '&:first-of-type': {
+                bgcolor: '#a4b0de' } } }}>
           <Tooltip title="Minh Thieu">
             <Avatar alt="Minh Thieu" src="https://avatars.githubusercontent.com/u/190623775?v=4" />
           </Tooltip>
-          <Tooltip title="Meo Meo">
-            <Avatar alt="Remy Sharp" src="https://p16-sign-sg.tiktokcdn.com/tos-alisg-avt-0068/e5bbd0140562f1c6f20e625dd63ce652~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&nonce=37194&refresh_token=6db9ff7f47626ce8645c714ac4a9238a&x-expires=1741190400&x-signature=tplbxQVMDq4nNSSuFpy9p0HDzB8%3D&idc=sg1&ps=13740610&shcp=81f88b70&shp=a5d48078&t=4d5b0474" />
+          <Tooltip title="Met5raduong">
+            <Avatar alt="Remy Sharp" src="https://p9-sign-sg.tiktokcdn.com/tos-alisg-avt-0068/8d98b962751485b53d6290837168c37e~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=a4ee6d50&x-expires=1742785200&x-signature=zpYpNDZHCTYFRLUHy5TAl%2Bx0Mug%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=sg1"/>
           </Tooltip>
-          <Tooltip title="Mi Mi">
-            <Avatar alt="Remy Sharp" src="https://p16-sign-sg.tiktokcdn.com/tos-alisg-avt-0068/06776eacaf08b929377ae52f21347dbe~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&nonce=44643&refresh_token=9285bb649a55de70de205632ef154bf0&x-expires=1741190400&x-signature=CK9nglMb1XfkZgVb6xokoqvHdRc%3D&idc=sg1&ps=13740610&shcp=81f88b70&shp=a5d48078&t=4d5b0474" />
+          <Tooltip title="QuynhShyn">
+            <Avatar alt="Remy Sharp" src="https://p16-sign-sg.tiktokcdn.com/tos-alisg-avt-0068/dfbe709dcf119121645f1686af4063f4~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=6cf0c7a6&x-expires=1742785200&x-signature=QyEf7P6O92smVJqHbjwEbzznZgs%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=sg1" />
           </Tooltip>
           <Tooltip title="Minh Thieu">
             <Avatar alt="Remy Sharp" src="https://avatars.githubusercontent.com/u/190623775?v=4" />

@@ -1,5 +1,3 @@
-import { BorderColor } from '@mui/icons-material'
-import { teal, deepOrange, cyan, orange } from '@mui/material/colors'
 import { experimental_extendTheme as extendTheme } from '@mui/material/styles'
 
 const APP_BAR_HEIGHT = '58px'
@@ -15,7 +13,7 @@ const theme = extendTheme({
     boardBarHeight: BOARD_BAR_HEIGHT,
     boardContentHeight: BOARD_CONTENT_HEIGHT,
     headerColumnHeight: HEADER_COLUMN_HEIGHT,
-    footeerColumnHeight: FOOTER_COLUMN_HEIGHT
+    footerColumnHeight: FOOTER_COLUMN_HEIGHT
   },
   colorSechemes:{
     // light:{

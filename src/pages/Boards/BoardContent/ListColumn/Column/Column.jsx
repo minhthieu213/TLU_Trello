@@ -19,7 +19,7 @@ import Button from '@mui/material/Button'
 import { Tooltip, Typography } from '@mui/material'
 import theme from '~/theme'
 
-function Column() {
+function Column({ column }) {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const handleClick = (event) => {
@@ -47,8 +47,8 @@ function Column() {
         justifyContent: 'space-between'
       }}>
         <Typography
-        sx={{ fontWeight: 'bold', cursor: 'pointer'}}
-        >Column title</Typography>
+          sx={{ fontWeight: 'bold', cursor: 'pointer' }}
+        >{column?.title}</Typography>
         <Tooltip title="More options">
           <MoreVertIcon
             id="basic-button-workspaces"
@@ -57,7 +57,7 @@ function Column() {
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
             sx={{
-              '&:hover': { bgcolor: '#dfe4ea'},
+              '&:hover': { bgcolor: '#dfe4ea' },
               color: 'text.primary',
               cursor: 'pointer',
               borderRadius: '6px'
@@ -106,7 +106,7 @@ function Column() {
       </Box>
 
       {/* List card */}
-      <ListCard />
+      <ListCard cards={column?.cards}/>
       {/* Box Footer */}
       <Box sx={{
         height: theme.trello.foooterColumnHeight,
