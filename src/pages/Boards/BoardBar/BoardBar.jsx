@@ -91,16 +91,16 @@ function BoardBar({ board }) {
             <Avatar alt="Minh Thieu" src="https://avatars.githubusercontent.com/u/190623775?v=4" />
           </Tooltip>
           <Tooltip title="Met5raduong">
-            <Avatar alt="Remy Sharp" src="https://p9-sign-sg.tiktokcdn.com/tos-alisg-avt-0068/8d98b962751485b53d6290837168c37e~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=a4ee6d50&x-expires=1742785200&x-signature=zpYpNDZHCTYFRLUHy5TAl%2Bx0Mug%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=sg1"/>
+            <Avatar alt="Remy Sharp" src=""/>
           </Tooltip>
           <Tooltip title="QuynhShyn">
-            <Avatar alt="Remy Sharp" src="https://p16-sign-sg.tiktokcdn.com/tos-alisg-avt-0068/dfbe709dcf119121645f1686af4063f4~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=6cf0c7a6&x-expires=1742785200&x-signature=QyEf7P6O92smVJqHbjwEbzznZgs%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=sg1" />
+            <Avatar alt="Remy Sharp" src="" />
           </Tooltip>
           <Tooltip title="Minh Thieu">
-            <Avatar alt="Remy Sharp" src="https://avatars.githubusercontent.com/u/190623775?v=4" />
+            <Avatar alt="Remy Sharp" src="" />
           </Tooltip>
           <Tooltip title="Minh Thieu">
-            <Avatar alt="Remy Sharp" src="https://avatars.githubusercontent.com/u/190623775?v=4" />
+            <Avatar alt="Remy Sharp" src="" />
           </Tooltip>
         </AvatarGroup>
       </Box>

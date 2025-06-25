@@ -28,7 +28,7 @@ function AppBar() {
 
   const handleSearchValue = (e) => {
     setSearchValue(e.target.value)
-  };
+  }
 
   return (
     <Box
@@ -105,7 +105,7 @@ function AppBar() {
                   cursor: searchValue ? "pointer" : "auto"
                 }}
               />
-            ),
+            )
           }}
           sx={{
             minWidth: 120,
@@ -140,7 +140,7 @@ function AppBar() {
         <Profile />
       </Box>
     </Box>
-  );
+  )
 }
 
-export default AppBar;
+export default AppBar
