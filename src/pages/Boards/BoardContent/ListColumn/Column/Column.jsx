@@ -19,6 +19,10 @@ import Button from '@mui/material/Button'
 import { Tooltip, Typography } from '@mui/material'
 import theme from '~/theme'
 
+import {useSortable} from '@dnd-kit/sortable';
+import {CSS} from '@dnd-kit/utilities';
+import mapOrder from '~/utils/sorts'
+
 function Column({ column }) {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
@@ -28,15 +32,30 @@ function Column({ column }) {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  const { attributes, listeners, setNodeRef, transform, transition,} = useSortable({
+    id: column._id,
+    data: {...column}
+  })
+
+  const DndKitColumnStyle = {
+    transform: CSS.Translate.toString(transform),
+    transition
+  }
+
+  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
+
   return (
-    <Box sx={{
-      minWidth: '300px',
-      maxWidth: '300px',
-      bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : '#ebecf0' ),
-      ml: 2,
-      borderRadius: '6px',
-      height: 'fit-content',
-      maxHeight: (theme) => `calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`
+    <Box
+      ref={setNodeRef} style={DndKitColumnStyle} {...attributes} {...listeners}
+      sx={{
+        minWidth: '300px',
+        maxWidth: '300px',
+        bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : '#ebecf0' ),
+        ml: 2,
+        borderRadius: '6px',
+        height: 'fit-content',
+        maxHeight: (theme) => `calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`
     }}>
       {/* Header column */}
       <Box sx={{
@@ -106,7 +125,7 @@ function Column({ column }) {
       </Box>
 
       {/* List card */}
-      <ListCard cards={column?.cards}/>
+      <ListCard cards={orderedCards}/>
       {/* Box Footer */}
       <Box sx={{
         height: theme.trello.foooterColumnHeight,

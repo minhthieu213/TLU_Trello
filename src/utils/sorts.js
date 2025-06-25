@@ -25,3 +25,5 @@ const mapOrder = (originalArray, orderArray, key) => {
 
   return orderedArray
 }
+
+export default mapOrder
