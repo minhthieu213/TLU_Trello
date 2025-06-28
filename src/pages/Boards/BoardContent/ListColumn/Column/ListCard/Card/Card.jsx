@@ -8,13 +8,28 @@ import AttachmentIcon from '@mui/icons-material/Attachment'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 
+import {useSortable} from '@dnd-kit/sortable';
+import {CSS} from '@dnd-kit/utilities';
+
 function Card({ card }) {
   const shouldShowCardActions = () => {
     return !!card?.memberIds?.length || !!card?.comments?.length || !!card?.attachments?.length
   }
 
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({
+      id: card._id,
+      data: {...card}
+    })
+  
+  const DndKitCardStyle = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    border: isDragging ? '2px solid #2980b9' : undefined
+  }
+
   return (
-    <MuiCard sx={{
+    <MuiCard ref={setNodeRef} style={DndKitCardStyle} {...listeners} {...attributes} sx={{
       cursor: 'pointer',
       boxShadow: '0 1px 1px rgba(0, 0, 0, 0.2)',
       overflow: 'unset'
