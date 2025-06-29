@@ -19,7 +19,8 @@ import {
 import mapOrder from '~/utils/sorts'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import {arrayMove} from '@dnd-kit/sortable'
-import { cloneDeep, over } from 'lodash'
+import { cloneDeep, isEmpty } from 'lodash'
+import { generatePlaceholderCard } from '~/utils/formatter'
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
@@ -105,6 +106,11 @@ function BoardContent({ board }) {
           // Xoa card active khoi column ban dau
           nextActiveColumn.cards = nextActiveColumn.cards.filter(card => card._id !== activeDraggingCardId)
 
+          // Them placeholder card neu column rong
+          if(isEmpty(nextActiveColumn.cards)){
+            nextActiveColumn.cards = [generatePlaceholderCard(nextActiveColumn)]
+          }
+
           // Cap nhat lai mang thu tu card cho chuan
           nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(card => card._id)
         }
@@ -119,6 +125,9 @@ function BoardContent({ board }) {
           }
           // Them card vao vi tri moi
           nextOverColumn.cards = nextOverColumn.cards.toSpliced(newCardIndex, 0, rebuild_activeDraggingCardData)
+
+          // Xoa placeholdercard neu no dang ton tai
+          nextOverColumn.cards = nextOverColumn.cards.filter(card => !card.FE_placeholderCard)
 
           nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
         }
@@ -179,7 +188,7 @@ function BoardContent({ board }) {
 
       if(!activeColumn || !overColumn) return
 
-      // Keo tha giua 2 column khac nhau
+      // Keo tha card giua 2 column khac nhau
       if(oldColumnDraggingCard._id !== overColumn._id){
         moveCardBetwweenDifferentColumns(overColumn, overCardId, activeColumn, active, over, activeDraggingCardData, activeDraggingCardId)
       }
