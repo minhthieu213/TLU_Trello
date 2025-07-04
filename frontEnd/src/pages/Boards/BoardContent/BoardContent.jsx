@@ -7,8 +7,8 @@ import {
   DndContext, 
   closestCorners, 
   // closestCenter,
-  MouseSensor, 
-  TouchSensor,
+  // MouseSensor, 
+  // TouchSensor,
   useSensor, 
   useSensors, 
   DragOverlay, 
@@ -16,6 +16,7 @@ import {
   pointerWithin,
   // rectIntersection,
   getFirstCollision} from '@dnd-kit/core'
+import {MouseSensor, TouchSensor} from '~/customLibraries/dndKitSensors'
 import mapOrder from '~/utils/sorts'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import {arrayMove} from '@dnd-kit/sortable'
@@ -27,7 +28,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD',
 }
 
-function BoardContent({ board }) {
+function BoardContent({ board, createNewColumn, createNewCard }) {
 
 
   // Yeu cau di chuyen it nhat 10px thi moi kich hoat event, fix loi khi click kich hoat event
@@ -294,7 +295,7 @@ function BoardContent({ board }) {
         height: (theme) => theme.trello.boardContentHeight,
         p: '10px 0'
       }}>
-        <ListColumn columns={orderedColumns}/>
+        <ListColumn columns={orderedColumns} createNewColumn={createNewColumn} createNewCard={createNewCard}/>
         <DragOverlay dropAnimation={customDropAnimation}>
           {!activeDragItemType && null}
           {( activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) && <Column column={activeDragItemData}/>}
