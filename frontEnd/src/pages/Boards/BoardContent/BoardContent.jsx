@@ -4,37 +4,34 @@ import Card from './ListColumn/Column/ListCard/Card/Card'
 import Column from './ListColumn/Column/Column'
 
 import {
-  DndContext, 
-  closestCorners, 
+  DndContext,
+  closestCorners,
   // closestCenter,
-  // MouseSensor, 
+  // MouseSensor,
   // TouchSensor,
-  useSensor, 
-  useSensors, 
-  DragOverlay, 
+  useSensor,
+  useSensors,
+  DragOverlay,
   defaultDropAnimationSideEffects,
   pointerWithin,
   // rectIntersection,
   getFirstCollision} from '@dnd-kit/core'
-import {MouseSensor, TouchSensor} from '~/customLibraries/dndKitSensors'
+import { MouseSensor, TouchSensor } from '~/customLibraries/dndKitSensors'
 import { useEffect, useState, useCallback, useRef } from 'react'
-import {arrayMove} from '@dnd-kit/sortable'
+import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep, isEmpty } from 'lodash'
 import { generatePlaceholderCard } from '~/utils/formatter'
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
-  CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD',
+  CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
 
-function BoardContent({ 
-  board, 
-  createNewColumn, 
-  moveColumns, 
-  createNewCard, 
-  moveCardInTheSameColumn, 
-  MoveCardToDifferentColumn,
-  deleteColumn
+function BoardContent({
+  board,
+  moveColumns,
+  moveCardInTheSameColumn,
+  MoveCardToDifferentColumn
 }) {
 
 
@@ -42,14 +39,14 @@ function BoardContent({
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
       distance: 10,
-  }})
- 
+  } })
+
   // Cam ung thi delay 250ms va dung sai (do chenh lenh 5px) thi moi kich hoat event
   const touchSensor = useSensor(TouchSensor, {
     activationConstraint: {
       delay: 250,
       tolerance: 500
-  }})
+  } })
 
   const sensors = useSensors(mouseSensor, touchSensor)
 
@@ -63,7 +60,7 @@ function BoardContent({
 
   // Id Diem va cham cuoi cung 
   const lastOverId = useRef(null)
-  
+
   useEffect(() => {
     setOrderedColumns(board.columns)
   }, [board])
@@ -95,15 +92,15 @@ function BoardContent({
         const overCardIndex = overColumn?.cards.findIndex(card => card._id === overCardId)
 
         // Tinh toan vi tri moi cho card
-        let newCardIndex 
+        let newCardIndex
         const isBelowOverItem =
           active.rect.current.translated &&
           active.rect.current.translated.top >
           over.rect.top + over.rect.height
 
-        const modifier = isBelowOverItem ? 1 : 0;
+        const modifier = isBelowOverItem ? 1 : 0
 
-        newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overColumn?.cards.length + 1;
+        newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overColumn?.cards.length + 1
 
         const nextColumns = cloneDeep(prevColumns)
         const nextActiveColumn = nextColumns.find(column => column._id === activeColumn._id)
@@ -262,7 +259,7 @@ function BoardContent({
         },
       },
     }),
-  };
+  }
 
   const collisionDetectionStrategy = useCallback((args) => {
     // closestCorners thuật toán phát hiện góc gần nhất chỉ tối ưu cho kéo thả column phát hiện va chạm
@@ -301,8 +298,8 @@ function BoardContent({
   }, [activeDragItemType, orderedColumns])
 
   return (
-    <DndContext 
-      onDragStart={handleDragStart} 
+    <DndContext
+      onDragStart={handleDragStart}
       onDragOver={hanldeDragOver}
       onDragEnd={handleDragEnd}
       collisionDetection={collisionDetectionStrategy} sensors={sensors}>
@@ -312,7 +309,7 @@ function BoardContent({
         height: (theme) => theme.trello.boardContentHeight,
         p: '10px 0'
       }}>
-        <ListColumn columns={orderedColumns} createNewColumn={createNewColumn} createNewCard={createNewCard} deleteColumn={deleteColumn}/>
+        <ListColumn columns={orderedColumns}/>
         <DragOverlay dropAnimation={customDropAnimation}>
           {!activeDragItemType && null}
           {( activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) && <Column column={activeDragItemData}/>}

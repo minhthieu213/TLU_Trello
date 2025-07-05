@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box"
 import ModeSelect from "../ModeSelect/ModeSelect"
 import AppsIcon from "@mui/icons-material/Apps"
-import { ReactComponent as TrelloIcon } from "~/assets/trello.svg"
+import { ReactComponent as TrelloIcon } from "~/assets/logo.svg"
 import SvgIcon from "@mui/material/SvgIcon"
 import { Typography } from "@mui/material"
 import Button from "@mui/material/Button"
@@ -56,12 +56,12 @@ function AppBar() {
             color: "white"
           }}
         >
-          <SvgIcon component={TrelloIcon} fontSize="small" inheritViewBox />
+          <SvgIcon component={TrelloIcon} fontSize="medium" inheritViewBox />
           <Typography
             variant="span"
             sx={{ fontSize: "1.2rem", fontWeight: "bold" }}
           >
-            Trello
+            TLU Trello
           </Typography>
         </Box>
         <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>

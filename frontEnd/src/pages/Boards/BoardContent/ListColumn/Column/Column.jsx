@@ -15,12 +15,21 @@ import { Tooltip, Typography } from '@mui/material'
 import theme from '~/theme'
 import TextField from "@mui/material/TextField"
 import CloseIcon from "@mui/icons-material/Close"
-import {useSortable} from '@dnd-kit/sortable'
-import {CSS} from '@dnd-kit/utilities'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import { toast } from 'react-toastify'
-import { useConfirm } from "material-ui-confirm";
+import { useConfirm } from "material-ui-confirm"
+import {
+  updateCurrentActiveBoard,
+  selectCurrentActiveBoard } from "~/redux/activeBoard/activeBoardSlice"
 
-function Column({ column, createNewCard, deleteColumn }) {
+import { useDispatch, useSelector } from 'react-redux'
+import { cloneDeep } from 'lodash'
+import { createNewCardAPI, deleteColumnAPI } from '~/apis'
+
+function Column({ column }) {
+  const dispatch = useDispatch()
+  const board = useSelector(selectCurrentActiveBoard)
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const handleClick = (event) => {
@@ -30,16 +39,16 @@ function Column({ column, createNewCard, deleteColumn }) {
     setAnchorEl(null)
   }
 
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: column._id,
-    data: {...column}
+    data: { ...column }
   })
 
   const DndKitColumnStyle = {
     transform: CSS.Translate.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
-    height: '100%',
+    height: '100%'
   }
 
   const orderedCards = column.cards
@@ -49,16 +58,26 @@ function Column({ column, createNewCard, deleteColumn }) {
 
   const addNewCard = async () => {
     if(!newCardTitle) {
-      toast.error("Please enter card title!", {position: 'bottom-right'})
+      toast.error("Please enter card title!", { position: 'bottom-right' })
       return
-    } 
-    
-    const newCardData =  {
-      title: newCardTitle,
-      columnId: column._id,
     }
 
-    createNewCard(newCardData)
+    const newCardData = {
+      title: newCardTitle,
+      columnId: column._id
+    }
+
+    const createdCard = await createNewCardAPI({
+      ...newCardData,
+      boardId: board._id
+    })
+    const newBoard = cloneDeep(board)
+    const columnToUpdate = newBoard.columns.find(column => column._id === createdCard.columnId)
+    if (columnToUpdate) {
+      columnToUpdate.cards.push(createdCard)
+      columnToUpdate.cardOrderIds.push(createdCard._id)
+    }
+    dispatch(updateCurrentActiveBoard(newBoard))
 
     toggleOpenCardForm()
     setNewCardTitle('')
@@ -72,12 +91,20 @@ function Column({ column, createNewCard, deleteColumn }) {
       confirmationText: "Yes",
       cancellationText: 'No',
       buttonOrder: ['confirm', 'cancel'],
-      dialogProps: {maxWidth: 'xs'},
+      dialogProps: { maxWidth: 'xs' },
       allowClose: false,
-      confirmationButtonProps: {color: 'error'},
-      cancellationButtonProps: {color: 'inherit'}
+      confirmationButtonProps: { color: 'error' },
+      cancellationButtonProps: { color: 'inherit' }
     }) .then(() => {
-      deleteColumn(column._id)
+      const newBoard = { ...board }
+      newBoard.columns = newBoard.columns.filter(c => c._id !== column._id)
+      newBoard.columnOrderIds = newBoard.columnOrderIds.filter(_id => _id !== column._id)
+
+      dispatch(updateCurrentActiveBoard(newBoard))
+
+      deleteColumnAPI(column._id).then(res => {
+        toast.success(res?.deleteResult)
+      })
     }).catch(() => {})
   }
 
@@ -130,14 +157,14 @@ function Column({ column, createNewCard, deleteColumn }) {
               'aria-labelledby': 'basic-button-workspaces'
             }}
           >
-            <MenuItem  onClick={toggleOpenCardForm} sx={{
-              '&:hover': { color: 'success.light', '& .addCardIcon': {color: 'success.light'}}
+            <MenuItem onClick={toggleOpenCardForm} sx={{
+              '&:hover': { color: 'success.light', '& .addCardIcon': { color: 'success.light' }}
             }}>
               <ListItemIcon><AddCardIcon className='addCardIcon' fontSize="small" /></ListItemIcon>
               <ListItemText>Add new card</ListItemText>
             </MenuItem>
             <MenuItem onClick={handleDeleteColumn} sx={{
-              '&:hover': { color: 'warning.dark', '& .deleteCardIcon': {color: 'warning.dark'}}
+              '&:hover': { color: 'warning.dark', '& .deleteCardIcon':  { color: 'warning.dark' }}
             }}>
               <ListItemIcon>
                 <DeleteOutlineIcon className='deleteCardIcon' fontSize="small" />
@@ -171,7 +198,7 @@ function Column({ column, createNewCard, deleteColumn }) {
               display: 'flex',
               alignItems: 'center',
               gap: 1
-          }}>            
+          }}>
             <TextField
               id="outlined-search"
               label="Enter card title..."
@@ -181,10 +208,10 @@ function Column({ column, createNewCard, deleteColumn }) {
               autoFocus
               data-no-dnd="true"
               value={newCardTitle}
-              onChange={(e) =>setNewCardTitle(e.target.value)}
+              onChange={(e) => setNewCardTitle(e.target.value)}
               sx={{
-                "& label": {  color: (theme) => theme.palette.primary.main },
-                "& input": { 
+                "& label": { color: (theme) => theme.palette.primary.main },
+                "& input": {
                   color: (theme) => theme.palette.primary.main,
                   bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : 'white')
                  },
@@ -205,8 +232,8 @@ function Column({ column, createNewCard, deleteColumn }) {
                 }
               }}
             />
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1}}>
-              <Button variant='contained' color='success' size='small' onClick={addNewCard}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Button className='interceptor-loading' variant='contained' color='success' size='small' onClick={addNewCard}
               sx={{
                 boxShadow: 'none',
                 border: '0.5px solid',
@@ -217,8 +244,8 @@ function Column({ column, createNewCard, deleteColumn }) {
                 onClick={toggleOpenCardForm}
                 fontSize="small"
                 sx={{
-                  color: (theme) => theme.palette.warning.light ,
-                  cursor:"pointer",
+                  color: (theme) => theme.palette.warning.light,
+                  cursor:"pointer"
                 }}
               />
             </Box>

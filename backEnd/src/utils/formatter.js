@@ -1,3 +1,5 @@
+import { pick } from "lodash"
+
 export const slugify = (val) => {
   if (!val) return ''
   return String(val)
@@ -17,3 +19,8 @@ export const slugify = (val) => {
  * Original String Test: 'Một Lập Trình Viên'
  * Slug Result: mot-lap-trinh-vien
  */
+
+export const pickUser = (user) => {
+  if(!user) return {}
+  return pick(user, ['_id', 'eamil', 'username', 'displayName', 'avatar', 'role', 'isActive', 'createdAt', 'updatedAt'])
+}
