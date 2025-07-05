@@ -2,6 +2,7 @@
 node_modules/
 frontEnd/node_modules/
 backEnd/node_modules/
+.env
 
 # Build outputs
 dist/
