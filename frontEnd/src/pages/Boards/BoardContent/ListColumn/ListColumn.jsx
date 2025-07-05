@@ -8,12 +8,12 @@ import {SortableContext, horizontalListSortingStrategy} from '@dnd-kit/sortable'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 
-function ListColumn({ columns, createNewColumn, createNewCard }) {
+function ListColumn({ columns, createNewColumn, createNewCard, deleteColumn }) {
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
   const toggleOpenColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
   const [newColumnTitle, setNewColumnTitle] = useState('')
 
-  const addNewColumn = async () => {
+  const addNewColumn = () => {
     if(!newColumnTitle) {
       toast.error("Please enter column title!")
       return
@@ -22,7 +22,7 @@ function ListColumn({ columns, createNewColumn, createNewCard }) {
       title: newColumnTitle
     }
 
-    await createNewColumn(newColumnData)
+    createNewColumn(newColumnData)
 
     toggleOpenColumnForm()
     setNewColumnTitle('')
@@ -42,7 +42,7 @@ function ListColumn({ columns, createNewColumn, createNewCard }) {
         '&::-webkit-scrollbar-track': { m: 2 }
       }}>
         {columns?.map((column) => (
-          <Column key={column._id} column={column} createNewCard={createNewCard}/>
+          <Column key={column._id} column={column} createNewCard={createNewCard} deleteColumn={deleteColumn}/>
         ))}
         {
           !openNewColumnForm 
